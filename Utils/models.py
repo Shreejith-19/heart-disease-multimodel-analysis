@@ -5,10 +5,9 @@ class Models:
     def train_random_forest_model(self,x_train, y_train, rdf_model, params_grid):
         """
         """
-        grid_search = GridSearchCV(rdf_model , params_grid, scoring = "accuracy", cv = 5, n_jobs = 4)
+        grid_search = GridSearchCV(rdf_model , params_grid, scoring = "f1_macro", cv = 5, n_jobs = 5)
         grid_search.fit(x_train, y_train)
-        best_model = grid_search.best_estimator_
-        return best_model
+        return grid_search.best_estimator_, grid_search.best_params_
     
     def train_SVM_model(self, model, x_train, y_train):
         """
