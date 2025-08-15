@@ -23,27 +23,21 @@ class Models:
     def test_model(self,trained_model, x_train, y_train, x_test, y_test, type):
         """
         """
+        def eval(y_pred, test_type):
+            print(f"{test_type} Results:")
+            print(f"accuracy score = {accuracy_score(y_pred, y_train)}")
+            print(f"Macro-F1 = {f1_score(y_pred, y_train, average = "macro")}")
+            print(f"Weighted-F1 = {f1_score(y_pred, y_train, average = "weighted")}")
+
         if type == "ANN":
-            y_pred_train = np.argmax(trained_model.predict(x_train), axis = 1)
-            print("Training Results:")
-            print(f"accuracy score = {accuracy_score(y_pred_train, y_train)}")
-            print(f"Macro-F1 = {f1_score(y_pred_train, y_train, average = "macro")}")
-            print(f"Weighted-F1 = {f1_score(y_pred_train, y_train, average = "weighted")}")
+            y_pred_class_train = np.argmax(trained_model.predict(x_train), axis = 1)
+            y_pred_class_test = np.argmax(trained_model.predict(x_test), axis = 1)
+            eval(y_pred_class_train, "Training")
             print("\n")
-            y_pred_test = np.argmax(trained_model.predict(x_test), axis = 1)
-            print("Testing Results:")
-            print(f"accuracy score = {accuracy_score(y_pred_test, y_test)}")
-            print(f"Macro-F1 = {f1_score(y_pred_test, y_test, average = "macro")}")
-            print(f"Weighted-F1 = {f1_score(y_pred_test, y_test, average = "weighted")}")
+            eval(y_pred_class_test, "Testing")
         else:
             y_pred_train = trained_model.predict(x_train)
-            print("Training Results:")
-            print(f"accuracy score = {accuracy_score(y_pred_train, y_train)}")
-            print(f"Macro-F1 = {f1_score(y_pred_train, y_train, average = "macro")}")
-            print(f"Weighted-F1 = {f1_score(y_pred_train, y_train, average = "weighted")}")
-            print("\n")
             y_pred_test = trained_model.predict(x_test)
-            print("Testing Results:")
-            print(f"accuracy score = {accuracy_score(y_pred_test, y_test)}")
-            print(f"Macro-F1 = {f1_score(y_pred_test, y_test, average = "macro")}")
-            print(f"Weighted-F1 = {f1_score(y_pred_test, y_test, average = "weighted")}")
+            eval(y_pred_train, "Training")
+            print("\n")
+            eval(y_pred_test, "Testing")
